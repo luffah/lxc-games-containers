@@ -1,0 +1,45 @@
+# Distribution configuration
+lxc.include = /usr/share/lxc/config/common.conf
+# Allow to change namespace
+lxc.include = /usr/share/lxc/config/userns.conf
+# Nesting (add security issues)
+lxc.include = /usr/share/lxc/config/nesting.conf
+
+lxc.mount.entry = /dev/dri dev/dri none bind,optional,create=dir
+lxc.mount.entry = /dev/snd dev/snd none bind,optional,create=dir
+lxc.mount.entry = /tmp/.X11-unix LXC_DIR_CONTAINER/tmp/.X11-unix none bind,optional,create=dir
+lxc.mount.entry = /dev/video0 dev/video0 none bind,optional,create=file
+
+lxc.hook.pre-start = LXC_DIR_CONTAINER/pre-start.sh
+
+lxc.environment = DISPLAY=:0
+
+lxc.mount.entry = LXC_DIR_GAME/home LXC_DIR_CONTAINER/home/ubuntu none bind,create=dir 0 0
+lxc.arch = linux32
+
+# Container specific configuration
+lxc.rootfs.path = dir:LXC_DIR_CONTAINER
+lxc.uts.name = common_bionic_i386
+
+# 
+# lxc.idmap = u 0 100000 65536
+# lxc.idmap = g 0 100000 65536
+#
+# every users start at 100000 except me
+# 100000 -> root (~ uid 0)
+# 1000 -> me (~uid 1000)
+# (0-me)
+lxc.idmap = u 0 100000 1000
+lxc.idmap = g 0 100000 1000
+# (me)
+lxc.idmap = u 1000 1000 1
+lxc.idmap = g 1000 1000 1
+# (me-65535)
+lxc.idmap = u 1001 101001 64535
+lxc.idmap = g 1001 101001 64535
+
+# Network configuration
+lxc.net.0.type = veth
+lxc.net.0.link = lxcbr0
+lxc.net.0.flags = up
+
