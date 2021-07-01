@@ -29,11 +29,11 @@ lxc.uts.name = common_bionic_i386
 # 100000 -> root (~ uid 0)
 # 1000 -> me (~uid 1000)
 # (0-me)
-lxc.idmap = u 0 100000 1000
-lxc.idmap = g 0 100000 1000
+lxc.idmap = u 0 100000 USER_UID
+lxc.idmap = g 0 100000 USER_UID
 # (me)
-lxc.idmap = u 1000 1000 1
-lxc.idmap = g 1000 1000 1
+lxc.idmap = u USER_UID USER_UID 1
+lxc.idmap = g USER_UID USER_UID 1
 # (me-65535)
 lxc.idmap = u 1001 101001 64535
 lxc.idmap = g 1001 101001 64535
